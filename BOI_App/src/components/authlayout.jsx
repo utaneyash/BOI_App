@@ -6,7 +6,7 @@ function AuthLayout({ eyebrow, title, subtitle, children, footer }) {
       <div className="guilloche"></div>
 
       <Link to="/" className="auth-brand">
-        <img src="/logo.png" alt="Bank of India logo" className="brand-logo" />
+        <img src="/images.png" alt="Bank of India logo" className="brand-logo" />
         Bank of India
       </Link>
 
