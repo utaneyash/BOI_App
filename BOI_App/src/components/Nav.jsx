@@ -1,0 +1,22 @@
+import { Link } from 'react-router-dom';
+
+function Nav() {
+  return (
+    <nav>
+      <div className="brand">
+        <img src="/logo.png" alt="Bank of India logo" className="brand-logo" />
+        Bank of India
+      </div>
+      <div className="nav-links">
+        <a href="#features">Features</a>
+        <a href="#trust">Security</a>
+        <a href="#">Pricing</a>
+        <a href="#">Support</a>
+      </div>
+      <Link to="/login" className="nav-link-plain">Log in</Link>
+      <Link to="/signup" className="nav-cta">Open account</Link>
+    </nav>
+  );
+}
+
+export default Nav;

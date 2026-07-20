@@ -1,0 +1,65 @@
+:root{
+  --ink: #0B1F2A;
+  --ink-2: #0F2733;
+  --parchment: #F5F1E8;
+  --brass: #C9A24B;
+  --brass-soft: #E4C97A;
+  --ledger-green: #2F5D50;
+  --text-soft: #C9D3D6;
+  --text-dim: #7C919A;
+}
+
+*{ box-sizing: border-box; margin: 0; padding: 0; }
+
+body{
+  background: var(--ink);
+  color: var(--parchment);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.serif{ font-family: 'Fraunces', serif; }
+.mono{ font-family: 'IBM Plex Mono', monospace; }
+
+/* guilloché texture, used behind the hero and CTA sections */
+.guilloche{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image:
+    repeating-linear-gradient(115deg, transparent 0 18px, rgba(201,162,75,0.35) 18px 19px, transparent 19px 40px),
+    repeating-linear-gradient(65deg, transparent 0 22px, rgba(201,162,75,0.25) 22px 23px, transparent 23px 46px);
+  mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, black 0%, transparent 75%);
+}
+
+.btn-primary{
+  background: var(--brass);
+  color: var(--ink);
+  border: none;
+  padding: 15px 28px;
+  font-size: 14.5px;
+  font-weight: 600;
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  transition: transform .15s ease, background .2s;
+}
+.btn-primary:hover{ background: var(--brass-soft); transform: translateY(-1px); }
+
+.btn-ghost{
+  color: var(--text-soft);
+  font-size: 14.5px;
+  text-decoration: none;
+  border-bottom: 1px solid var(--text-dim);
+  padding-bottom: 2px;
+  transition: color .2s, border-color .2s;
+  background: none;
+  cursor: pointer;
+}
+.btn-ghost:hover{ color: var(--parchment); border-color: var(--parchment); }
+
+@media (prefers-reduced-motion: reduce){
+  * { transition: none !important; animation: none !important; }
+}
