@@ -9,9 +9,10 @@ function Nav() {
       </div>
       <div className="nav-links">
         <a href="#features">Features</a>
-        <a href="#trust">Security</a>
+        <a href="#security">Security</a>
         <a href="#pricing">Pricing</a>
         <a href="#support">Support</a>
+        <Link to="/dashboard">Payments</Link>
       </div>
       <Link to="/login" className="nav-link-plain">Log in</Link>
       <Link to="/signup" className="nav-cta">Open account</Link>

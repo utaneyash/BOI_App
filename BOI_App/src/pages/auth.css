@@ -119,6 +119,16 @@
   margin-bottom: 6px;
 }
 
+.auth-notice{
+  background: rgba(201,162,75,0.12);
+  border: 1px solid rgba(201,162,75,0.35);
+  color: var(--brass-soft);
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
 .auth-footer{
   margin-top: 26px;
   text-align: center;

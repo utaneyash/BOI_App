@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 import AuthLayout from '../components/AuthLayout.jsx';
 import './Auth.css';
 
@@ -10,6 +11,8 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +30,18 @@ function Signup() {
     setLoading(true);
     try {
       // Replace with your real Spring Boot endpoint, e.g. POST /api/auth/signup
+      // const res = await fetch('/api/auth/signup', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ fullName, email, password }),
+      // });
+      // if (!res.ok) throw new Error('Could not create account');
+      // const data = await res.json();
+      // login(data.user);
+
       console.log('Signup submitted:', { fullName, email, password });
+      login({ fullName, email });
+      navigate('/', { replace: true });
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
     } finally {

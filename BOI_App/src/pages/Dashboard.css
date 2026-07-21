@@ -23,6 +23,12 @@
   font-weight: 500;
 }
 
+.dashboard-nav-right{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .dashboard-grid{
   display: grid;
   grid-template-columns: 0.85fr 1.15fr;
@@ -68,6 +74,84 @@
   padding: 10px 14px;
   border-radius: 4px;
   margin-bottom: 6px;
+}
+
+/* PIN confirmation modal */
+.pin-overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 12, 16, 0.75);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 20px;
+}
+.pin-modal{
+  width: 100%;
+  max-width: 340px;
+  background: linear-gradient(155deg, var(--ink-2), #0A1D27);
+  border: 1px solid rgba(201,162,75,0.3);
+  border-radius: 10px;
+  padding: 32px 28px;
+  box-shadow: 0 30px 60px -15px rgba(0,0,0,0.7);
+}
+.pin-title{
+  font-family: 'Fraunces', serif;
+  font-weight: 450;
+  font-size: 22px;
+  margin: 8px 0 12px;
+  color: var(--parchment);
+}
+.pin-subtitle{
+  font-size: 13px;
+  color: var(--text-soft);
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+.pin-amount{
+  color: var(--brass-soft);
+  font-weight: 600;
+}
+.pin-upi{
+  color: var(--parchment);
+}
+.pin-boxes{
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.pin-box{
+  width: 46px;
+  height: 54px;
+  text-align: center;
+  font-size: 22px;
+  font-family: 'IBM Plex Mono', monospace;
+  background: rgba(245,241,232,0.04);
+  border: 1px solid rgba(201,162,75,0.3);
+  border-radius: 6px;
+  color: var(--parchment);
+  outline: none;
+}
+.pin-box:focus{
+  border-color: var(--brass);
+  background: rgba(245,241,232,0.06);
+}
+.pin-submit{
+  width: 100%;
+  text-align: center;
+  margin-top: 22px;
+}
+.pin-submit:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.pin-cancel{
+  width: 100%;
+  text-align: center;
+  margin-top: 14px;
 }
 
 /* Transaction history card */

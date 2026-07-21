@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 import AuthLayout from '../components/AuthLayout.jsx';
 import './Auth.css';
 
@@ -9,6 +10,13 @@ function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+
+  // If ProtectedRoute redirected here, it passes a message and the page
+  // the user was originally trying to reach. Otherwise, just go home.
+  const redirectMessage = location.state?.message;
+  const redirectTo = location.state?.from || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,10 +32,11 @@ function Login() {
       // });
       // if (!res.ok) throw new Error('Invalid email or password');
       // const data = await res.json();
-      // store data.token somewhere (context/localStorage) before redirecting
+      // login(data.user); // store data.token too, once real auth exists
 
       console.log('Login submitted:', { email, password });
-      navigate('/dashboard');
+      login({ email });
+      navigate(redirectTo, { replace: true });
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
     } finally {
@@ -47,6 +56,7 @@ function Login() {
       }
     >
       <form className="auth-form" onSubmit={handleSubmit}>
+        {redirectMessage && <div className="auth-notice">{redirectMessage}</div>}
         {error && <div className="auth-error">{error}</div>}
 
         <label className="auth-label" htmlFor="email">Email address</label>
