@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 import UpiPaymentForm from '../components/UpiPaymentForm.jsx';
 import TransactionHistory from '../components/TransactionHistory.jsx';
 import './Dashboard.css';
@@ -16,9 +17,16 @@ const initialTransactions = [
 
 function Dashboard() {
   const [transactions, setTransactions] = useState(initialTransactions);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   const handlePaymentSuccess = (newTransaction) => {
     setTransactions([newTransaction, ...transactions]);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
   return (
@@ -28,8 +36,11 @@ function Dashboard() {
           <img src="/logo.png" alt="Bank of India logo" className="brand-logo" />
           Bank of India
         </Link>
-        <div className="dashboard-balance-pill">
-          Balance: <span>Rs 8,214.52</span>
+        <div className="dashboard-nav-right">
+          <div className="dashboard-balance-pill">
+            Balance: <span>Rs 8,214.52</span>
+          </div>
+          <button className="btn-ghost" onClick={handleLogout}>Log out</button>
         </div>
       </div>
 
