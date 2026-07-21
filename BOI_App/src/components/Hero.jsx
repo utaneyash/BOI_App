@@ -15,8 +15,7 @@ function Hero() {
         </h1>
         <p className="lede">
           Every balance, transfer, and fee shown exactly as it happened — no
-          jargon, no hidden charges, no surprises at month's end. Banking the
-          way a ledger was meant to read: clearly.
+          jargon, no hidden charges, no surprises at month's end. Your trust is our responsibility, and we take it seriously.
         </p>
         <div className="hero-actions">
           <Link to="/signup" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }}>
