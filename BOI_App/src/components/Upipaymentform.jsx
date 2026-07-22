@@ -1,16 +1,15 @@
 import { useState, useRef } from 'react';
+import { useAuth } from '../context/AuthContext.jsx';
+import { api } from '../api/client.js';
 
 const PIN_LENGTH = 4;
-// Mock PIN for demo purposes only — replace with real backend verification.
-// NEVER verify a PIN client-side in a real app; the backend must check it
-// against a securely hashed value and rate-limit attempts.
-const MOCK_CORRECT_PIN = '1234';
 
-function PinModal({ amount, upiId, onConfirm, onCancel }) {
+function PinModal({ amount, upiId, note, onConfirm, onCancel }) {
   const [digits, setDigits] = useState(Array(PIN_LENGTH).fill(''));
   const [error, setError] = useState('');
   const [verifying, setVerifying] = useState(false);
   const inputRefs = useRef([]);
+  const { token } = useAuth();
 
   const handleChange = (index, value) => {
     if (!/^[0-9]?$/.test(value)) return;
@@ -39,18 +38,21 @@ function PinModal({ amount, upiId, onConfirm, onCancel }) {
     }
 
     setVerifying(true);
-    // Replace with a real backend call, e.g. POST /api/payments/upi/verify-pin
-    // The backend checks the PIN against a hashed value and applies rate limiting.
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    if (pin === MOCK_CORRECT_PIN) {
-      onConfirm();
-    } else {
-      setError('Incorrect PIN. Please try again.');
+    try {
+      // The backend verifies the PIN against the securely hashed value on file
+      // and applies the actual debit + records the transaction, all atomically.
+      const transaction = await api.sendUpiPayment(
+        { upiId, amount: Number(amount.replace(/,/g, '')), note, pin },
+        token
+      );
+      onConfirm(transaction);
+    } catch (err) {
+      setError(err.message || 'Payment failed. Please try again.');
       setDigits(Array(PIN_LENGTH).fill(''));
       inputRefs.current[0]?.focus();
+    } finally {
+      setVerifying(false);
     }
-    setVerifying(false);
   };
 
   return (
@@ -119,28 +121,15 @@ function UpiPaymentForm({ onPaymentSuccess }) {
       return;
     }
 
-    // Details are valid — now ask for the UPI PIN before actually paying
     setShowPinModal(true);
   };
 
-  const completePayment = () => {
-    const numericAmount = Number(amount);
-
-    // Replace with your real Spring Boot endpoint, e.g. POST /api/payments/upi
-    console.log('UPI payment confirmed:', { upiId, amount: numericAmount, note });
-
-    setSuccess(`Rs ${numericAmount.toLocaleString('en-IN')} sent to ${upiId}`);
+  const handlePinConfirm = (transaction) => {
+    setSuccess(`Rs ${Number(amount).toLocaleString('en-IN')} sent to ${upiId}`);
     setShowPinModal(false);
 
     if (onPaymentSuccess) {
-      onPaymentSuccess({
-        id: Date.now(),
-        initial: upiId.charAt(0).toUpperCase(),
-        name: `UPI transfer — ${upiId}`,
-        subtitle: 'Just now',
-        amount: numericAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 }),
-        isPositive: false,
-      });
+      onPaymentSuccess(transaction);
     }
 
     setUpiId('');
@@ -200,7 +189,8 @@ function UpiPaymentForm({ onPaymentSuccess }) {
         <PinModal
           amount={Number(amount).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
           upiId={upiId}
-          onConfirm={completePayment}
+          note={note}
+          onConfirm={handlePinConfirm}
           onCancel={() => setShowPinModal(false)}
         />
       )}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { api } from '../api/client.js';
 import AuthLayout from '../components/AuthLayout.jsx';
 import './Auth.css';
 
@@ -24,18 +25,8 @@ function Login() {
     setLoading(true);
 
     try {
-      // Replace with your real Spring Boot endpoint, e.g. POST /api/auth/login
-      // const res = await fetch('/api/auth/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password }),
-      // });
-      // if (!res.ok) throw new Error('Invalid email or password');
-      // const data = await res.json();
-      // login(data.user); // store data.token too, once real auth exists
-
-      console.log('Login submitted:', { email, password });
-      login({ email });
+      const data = await api.login({ email, password });
+      login({ fullName: data.fullName, email: data.email }, data.token);
       navigate(redirectTo, { replace: true });
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');

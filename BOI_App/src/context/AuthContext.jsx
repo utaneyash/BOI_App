@@ -3,20 +3,28 @@ import { createContext, useContext, useState } from 'react';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null); // null = logged out; replace with real user object on login
+  const [token, setToken] = useState(() => sessionStorage.getItem('token'));
+  const [user, setUser] = useState(() => {
+    const stored = sessionStorage.getItem('user');
+    return stored ? JSON.parse(stored) : null;
+  });
 
-  const login = (userData) => {
-    // Replace with storing a real JWT (e.g. in memory or an httpOnly cookie)
-    // once your Spring Boot /api/auth/login endpoint exists.
-    setUser(userData || { email: 'demo@user.com' });
+  const login = (userData, jwt) => {
+    setUser(userData);
+    setToken(jwt);
+    sessionStorage.setItem('token', jwt);
+    sessionStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
+    setToken(null);
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout }}>
+    <AuthContext.Provider value={{ user, token, isAuthenticated: !!token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

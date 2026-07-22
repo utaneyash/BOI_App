@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import { api } from '../api/client.js';
 import AuthLayout from '../components/AuthLayout.jsx';
 import './Auth.css';
 
@@ -9,6 +10,7 @@ function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [upiPin, setUpiPin] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -26,21 +28,15 @@ function Signup() {
       setError('Password must be at least 8 characters.');
       return;
     }
+    if (!/^\d{4,6}$/.test(upiPin)) {
+      setError('UPI PIN must be 4-6 digits.');
+      return;
+    }
 
     setLoading(true);
     try {
-      // Replace with your real Spring Boot endpoint, e.g. POST /api/auth/signup
-      // const res = await fetch('/api/auth/signup', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ fullName, email, password }),
-      // });
-      // if (!res.ok) throw new Error('Could not create account');
-      // const data = await res.json();
-      // login(data.user);
-
-      console.log('Signup submitted:', { fullName, email, password });
-      login({ fullName, email });
+      const data = await api.signup({ fullName, email, password, upiPin });
+      login({ fullName: data.fullName, email: data.email }, data.token);
       navigate('/', { replace: true });
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.');
@@ -104,6 +100,19 @@ function Signup() {
           placeholder="Re-enter your password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+        />
+
+        <label className="auth-label" htmlFor="upiPin">Set your UPI PIN</label>
+        <input
+          id="upiPin"
+          type="password"
+          inputMode="numeric"
+          maxLength={6}
+          className="auth-input mono"
+          placeholder="4-6 digits"
+          value={upiPin}
+          onChange={(e) => setUpiPin(e.target.value.replace(/\D/g, ''))}
           required
         />
 
