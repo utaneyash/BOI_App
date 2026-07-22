@@ -34,6 +34,12 @@ nav{
   transition: color .2s;
 }
 .nav-link-plain:hover{ color: var(--brass-soft); }
+.nav-greeting{
+  color: var(--text-soft);
+  font-size: 14px;
+  margin-right: 18px;
+  font-family: 'IBM Plex Mono', monospace;
+}
 
 /* Hero */
 .hero{
@@ -84,6 +90,13 @@ h1 em{ font-style: italic; color: var(--brass-soft); font-weight: 600; }
   color: var(--text-dim);
 }
 .card-acct{ font-family:'IBM Plex Mono', monospace; font-size: 13px; color: var(--text-soft); margin-top: 6px; }
+.card-holder-name{
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--parchment);
+  margin-top: 8px;
+}
 .card-balance{ font-family:'Fraunces', serif; font-size: 44px; font-weight: 450; color: var(--parchment); margin: 4px 0 2px; }
 .card-balance .cents{ font-size: 24px; color: var(--text-dim); }
 .card-delta{

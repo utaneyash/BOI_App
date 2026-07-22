@@ -29,6 +29,12 @@
   gap: 20px;
 }
 
+.nav-greeting{
+  color: var(--text-soft);
+  font-size: 14px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
 .dashboard-grid{
   display: grid;
   grid-template-columns: 0.85fr 1.15fr;
