@@ -25,4 +25,6 @@ export const api = {
   getTransactions: (token) => request('/accounts/me/transactions', { token }),
   sendUpiPayment: (payload, token) =>
     request('/payments/upi', { method: 'POST', body: payload, token }),
+  getCard: (token) => request('/cards/me', { token }),
+  applyForCard: (token) => request('/cards/apply', { method: 'POST', token }),
 };
