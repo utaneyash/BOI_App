@@ -5,6 +5,7 @@ import { api } from '../api/client.js';
 import { formatTransaction } from '../utils/formatTransaction.js';
 import UpiPaymentForm from '../components/UpiPaymentForm.jsx';
 import TransactionHistory from '../components/TransactionHistory.jsx';
+import CardSection from '../components/CardSection.jsx';
 import './Dashboard.css';
 
 function Dashboard() {
@@ -48,11 +49,11 @@ function Dashboard() {
     <div className="dashboard-page">
       <div className="dashboard-nav">
         <Link to="/" className="auth-brand">
-          <img src="/images.png" alt="Bank of India logo" className="brand-logo" />
+          <img src="/logo.png" alt="Bank of India logo" className="brand-logo" />
           Bank of India
         </Link>
         <div className="dashboard-nav-right">
-          {user?.fullName && <span className="nav-greeting"> {user.fullName.split(' ')[0]}</span>}
+          {user?.fullName && <span className="nav-greeting">Hi, {user.fullName.split(' ')[0]}</span>}
           <div className="dashboard-balance-pill">
             Balance:{' '}
             <span>
@@ -66,7 +67,10 @@ function Dashboard() {
       {error && <div className="auth-error" style={{ maxWidth: '1100px', margin: '0 auto 20px' }}>{error}</div>}
 
       <div className="dashboard-grid">
-        <UpiPaymentForm onPaymentSuccess={handlePaymentSuccess} />
+        <div>
+          <UpiPaymentForm onPaymentSuccess={handlePaymentSuccess} />
+          <CardSection />
+        </div>
         <TransactionHistory transactions={loading ? [] : transactions} />
       </div>
     </div>
